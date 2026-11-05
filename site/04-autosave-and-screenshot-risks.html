@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local AI Privacy Hardening Guide &mdash; Autosave &amp; screenshots</title>
+<meta name="description" content="Plain-English guide to locking down a local AI setup: ports, firewall rules, model and cache hygiene, chat persistence, autosave risks, shell history, and a monthly reset ritual.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="sitename"><a href="index.html"><span>Local AI</span> Privacy Hardening Guide</a></p>
+    <nav class="topnav"><a href="index.html">Start here</a><a href="01-ports-and-firewall.html">Ports &amp; firewall</a><a href="02-model-files-and-cache-hygiene.html">Model &amp; cache hygiene</a><a href="03-where-chats-persist-on-disk.html">Where chats live</a><a href="04-autosave-and-screenshot-risks.html" aria-current="page">Autosave &amp; screenshots</a><a href="05-shell-history-hygiene.html">Shell history</a><a href="06-monthly-privacy-reset-ritual.html">Monthly reset</a><a href="hardening-checklist.html">Checklist</a><a href="glossary.html">Glossary</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>04 · Autosave and screenshot risks</h1>
+<p>Some leaks don't come from the AI tool at all. They come from your operating system and desktop apps politely "helping" you preserve the past.</p>
+<h2>Autosave: the quiet copyist</h2>
+<p>Your system probably keeps helpfully-rotated copies of things:</p>
+<ul>
+<li><strong>Clipboard managers</strong> (many distros, Windows 10+ clipboard history, various Mac apps) remember screenshots and chat snippets you copied. Clear your clipboard history after pasting chat content into any other app.</li>
+<li><strong>Text editor autosave/backup files</strong> — VS Code's "Hot Exit" and auto-save keep the file in memory <em>and</em> on disk if you paste chat content into a scratch file to read it later.</li>
+<li><strong>OS screenshots</strong> land in known folders (e.g., <code>~/Pictures</code>, Desktop, or a "Captures" folder). Their names are predictable, so desktop search and third-party tools index them fast.</li>
+<li><strong>Cloud-synced Desktop/Documents.</strong> If Microsoft OneDrive, iCloud, Dropbox, or Google Drive syncs these folders, a screenshot of your chat and a <code>.txt</code> of your notes are on someone else's server within seconds of you taking them.</li>
+</ul>
+<h2>The screenshot checklist</h2>
+<p>Before you screenshot a chat (publishing a bug report, asking a friend, writing documentation):</p>
+<ol>
+<li><strong>Crop, don't share the whole window.</strong> Sidebars with other chat titles contain more than the question you mean to show.</li>
+<li><strong>Blur or replace usernames and real names.</strong> These show up in file names, tabs, and account panels.</li>
+<li><strong>Check the URL bar.</strong> <code>localhost:11434</code> may be mundane; <code>http://192.168.0.42:8080</code> tells a stranger your home network's address scheme.</li>
+<li><strong>Think about what syncs where first.</strong> Know where your OS stores screenshots and whether that folder is cloud-synced <em>before</em> you take the screenshot of anything sensitive.</li>
+</ol>
+<h2>Snippets-of-you, indexed</h2>
+<p>Your OS has search (Windows Search/Spotlight/Tracker). These index your AI chats' exports, model file names, and screenshots, making content searchable from a desktop search bar. That is a feature — until someone else uses your computer. If your machine is shared with family or coworkers, consider:</p>
+<ul>
+<li>Excluding the AI app's data folder from desktop search indexing.</li>
+<li>Using a separate OS user account for high-sensitivity work.</li>
+<li>Full-disk encryption (BitLocker/FileVault/LUKS) so powered-off snapshots aren't stories waiting to be told.</li>
+</ul>
+<h2>YouTube-and-friend leaks</h2>
+<p>If you <em>record</em> your screen for tutorials or bug reports:</p>
+<ul>
+<li>Have a "sensitive bin" folder per session, and move model lists, chat history, file paths, bookmarks, and passwords managers entirely out of frame before recording.</li>
+<li>Do not assume blur filters will catch everything; layout updates surprise everyone.</li>
+</ul>
+<p>Next: what your terminal remembers.</p>
+<div class="pagenav">
+  <a href="index.html">&larr; Start here</a> &middot;
+  <a href="hardening-checklist.html">Hardening checklist</a> &middot;
+  <a href="glossary.html">Glossary</a>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Local AI Privacy Hardening Guide &middot; A follow-up manual by Asdale Dynamics, LLC &middot; MIT License &middot; Education only &mdash; not security, legal, or medical advice.</p>
+  </div>
+</footer>
+</body>
+</html>

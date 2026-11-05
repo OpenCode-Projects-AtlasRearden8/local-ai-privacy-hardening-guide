@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local AI Privacy Hardening Guide &mdash; Glossary</title>
+<meta name="description" content="Plain-English guide to locking down a local AI setup: ports, firewall rules, model and cache hygiene, chat persistence, autosave risks, shell history, and a monthly reset ritual.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="sitename"><a href="index.html"><span>Local AI</span> Privacy Hardening Guide</a></p>
+    <nav class="topnav"><a href="index.html">Start here</a><a href="01-ports-and-firewall.html">Ports &amp; firewall</a><a href="02-model-files-and-cache-hygiene.html">Model &amp; cache hygiene</a><a href="03-where-chats-persist-on-disk.html">Where chats live</a><a href="04-autosave-and-screenshot-risks.html">Autosave &amp; screenshots</a><a href="05-shell-history-hygiene.html">Shell history</a><a href="06-monthly-privacy-reset-ritual.html">Monthly reset</a><a href="hardening-checklist.html">Checklist</a><a href="glossary.html" aria-current="page">Glossary</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>Glossary</h1>
+<p>Plain-English definitions, friend-style, for every term this manual leans on.</p>
+<p><strong>Cache</strong> — A folder where an app keeps things it downloaded so it doesn't have to download them again. Also where surprises accumulate.</p>
+<p><strong>Chat history</strong> — The record of a conversation. Sometimes a JSON file, sometimes a row in a database, sometimes nothing at all.</p>
+<p><strong>Checkpoint</strong> — One saved version of a model's weights. Checkpoints pile up fast; most people only need the latest.</p>
+<p><strong>Database (SQLite)</strong> — A single file that holds many records, like a filing cabinet in one box. Yes, a <code>.db</code> file is "all your chats" in one convenient-to-move package.</p>
+<p><strong>Environment variable</strong> — A named setting passed to a program, like <code>OLLAMA_HOST=127.0.0.1</code>. Also the classic place people leak API keys on the internet.</p>
+<p><strong>Firewall</strong> — A bouncer that approves or denies network knocks. Rules are just a written list of who gets in.</p>
+<p><strong>Loopback (<code>127.0.0.1</code>)</strong> — The address meaning "this machine, nowhere else." Anything listening only on this address can't be reached from your network, period.</p>
+<p><strong>Model file</strong> — The big file containing a neural network's weights. <code>.safetensors</code> and <code>.gguf</code> are safe formats; old <code>.pth</code>/<code>.bin</code> formats can carry executable payloads inside.</p>
+<p><strong>Port</strong> — A numbered door on your computer. <code>11434</code> is Ollama's usual door. <code>0.0.0.0</code> means "listening at every door"; <code>127.0.0.1</code> means "listening only inside."</p>
+<p><strong>Orphan file</strong> — A file left behind after the app thinks it deleted the thing. Common for chat records and partial downloads.</p>
+<p><strong>Quantization</strong> — Squeezing a model to fewer bytes (Q4, Q5, Q8). It's why a 70-billion-parameter model fits on your laptop. Nothing to do with privacy, but you'll see the term constantly in model file names.</p>
+<p><strong>Shell history</strong> — The plaintext diary your terminal keeps of every command. Yes, including the one with the key in it.</p>
+<p><strong>Vector store / embeddings</strong> — The searchable chunks created when you attach documents to a local model for Q&amp;A. Treated here as data, because it is your data.</p>
+<p><strong>Weights</strong> — The actual learned numbers inside a model file. If weights are the cake, quantization is how tightly you wrapped it.</p>
+<div class="pagenav">
+  <a href="index.html">&larr; Start here</a> &middot;
+  <a href="hardening-checklist.html">Hardening checklist</a> &middot;
+  <a href="glossary.html">Glossary</a>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Local AI Privacy Hardening Guide &middot; A follow-up manual by Asdale Dynamics, LLC &middot; MIT License &middot; Education only &mdash; not security, legal, or medical advice.</p>
+  </div>
+</footer>
+</body>
+</html>

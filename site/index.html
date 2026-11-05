@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local AI Privacy Hardening Guide &mdash; Start here</title>
+<meta name="description" content="Plain-English guide to locking down a local AI setup: ports, firewall rules, model and cache hygiene, chat persistence, autosave risks, shell history, and a monthly reset ritual.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="sitename"><a href="index.html"><span>Local AI</span> Privacy Hardening Guide</a></p>
+    <nav class="topnav"><a href="index.html" aria-current="page">Start here</a><a href="01-ports-and-firewall.html">Ports &amp; firewall</a><a href="02-model-files-and-cache-hygiene.html">Model &amp; cache hygiene</a><a href="03-where-chats-persist-on-disk.html">Where chats live</a><a href="04-autosave-and-screenshot-risks.html">Autosave &amp; screenshots</a><a href="05-shell-history-hygiene.html">Shell history</a><a href="06-monthly-privacy-reset-ritual.html">Monthly reset</a><a href="hardening-checklist.html">Checklist</a><a href="glossary.html">Glossary</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>Local AI Privacy Hardening Guide</h1>
+<p><em>A follow-up manual to the Local AI Handbook</em></p>
+<h2>Who this is for</h2>
+<p>If you followed the <a href="https://dylanasdale.github.io">Local AI Handbook</a> and got a model running on your own machine — Ollama, LM Studio, Jan, or anything similar — congratulations. Your prompts and files are now (mostly) staying local, and that is a genuine privacy win.</p>
+<p>But <em>mostly</em> is the word that matters. Local AI still leaves traces:</p>
+<ul>
+<li>The chat you deleted in the app may still be on disk somewhere.</li>
+<li>The model files you "removed" two months ago may still be in a cache folder eating 20 GB.</li>
+<li>The server that runs your model may be listening on a real network port, visible to every device on your coffee-shop Wi-Fi.</li>
+<li>Your shell history may quietly contain things you typed while debugging.</li>
+</ul>
+<p>This manual is the step-by-step cleanup. It takes you from "it runs" to "it runs, and I know exactly what is on my disk and which doors are open." The whole thing is written in plain English, on the assumption you are comfortable copying commands into a terminal but not writing shell scripts from scratch.</p>
+<h2>What is in here</h2>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="01-ports-and-firewall.html">01 · Ports and firewall rules</a></td>
+<td>Which doors local AI opens, which to close, and why <code>127.0.0.1</code> is your safety word.</td>
+</tr>
+<tr>
+<td><a href="02-model-files-and-cache-hygiene.html">02 · Model files and cache hygiene</a></td>
+<td>Where models and downloads pile up, and how to clear them safely.</td>
+</tr>
+<tr>
+<td><a href="03-where-chats-persist-on-disk.html">03 · Where chats persist on disk</a></td>
+<td>The exact folders where your conversations are saved.</td>
+</tr>
+<tr>
+<td><a href="04-autosave-and-screenshot-risks.html">04 · Autosave and screenshot risks</a></td>
+<td>Clipboard history, OS screenshots, and snippets that leak to the cloud.</td>
+</tr>
+<tr>
+<td><a href="05-shell-history-hygiene.html">05 · Shell history hygiene</a></td>
+<td>What <code>~/.bash_history</code> remembers and how to make it forget.</td>
+</tr>
+<tr>
+<td><a href="06-monthly-privacy-reset-ritual.html">06 · The monthly privacy reset ritual</a></td>
+<td>A fifteen-minute recurring routine to keep everything tidy.</td>
+</tr>
+<tr>
+<td><a href="hardening-checklist.html">Hardening checklist</a></td>
+<td>A single printable checklist of every step in the manual.</td>
+</tr>
+<tr>
+<td><a href="glossary.html">Glossary</a></td>
+<td>Plain-English definitions of the terms used here.</td>
+</tr>
+</tbody>
+</table>
+<h2>How to use this manual</h2>
+<ol>
+<li>Read pages 01 through 03 in order. That is the "know your exposure" part.</li>
+<li>Work through pages 04 through 06 once, with the checklist open next to you.</li>
+<li>Print (or bookmark) the checklist. Do the monthly reset ritual on a recurring date — the first Saturday of the month works well.</li>
+</ol>
+<h2>What this is not</h2>
+<p>This is education, not a security audit, not legal advice, and not medical advice. Tools change their folder layouts and default settings between versions; paths here were written against the tool layouts common in 2026 and the manual tells you how to <em>find</em> the equivalent folder on your own machine. Your privacy risk depends on how you actually use AI — if your conversations contain real patient data, workers' names, or anything else sensitive, treat every app (local or cloud) as risky and talk to whoever governs your data policy.</p>
+<hr>
+<p>Built and maintained by <strong>Asdale Dynamics, LLC</strong> · Licensed MIT · Part of <a href="https://dylanasdale.github.io">The Massive AI Manual</a></p>
+<div class="pagenav">
+  <a href="index.html">&larr; Start here</a> &middot;
+  <a href="hardening-checklist.html">Hardening checklist</a> &middot;
+  <a href="glossary.html">Glossary</a>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Local AI Privacy Hardening Guide &middot; A follow-up manual by Asdale Dynamics, LLC &middot; MIT License &middot; Education only &mdash; not security, legal, or medical advice.</p>
+  </div>
+</footer>
+</body>
+</html>

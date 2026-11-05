@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local AI Privacy Hardening Guide &mdash; Monthly reset</title>
+<meta name="description" content="Plain-English guide to locking down a local AI setup: ports, firewall rules, model and cache hygiene, chat persistence, autosave risks, shell history, and a monthly reset ritual.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="sitename"><a href="index.html"><span>Local AI</span> Privacy Hardening Guide</a></p>
+    <nav class="topnav"><a href="index.html">Start here</a><a href="01-ports-and-firewall.html">Ports &amp; firewall</a><a href="02-model-files-and-cache-hygiene.html">Model &amp; cache hygiene</a><a href="03-where-chats-persist-on-disk.html">Where chats live</a><a href="04-autosave-and-screenshot-risks.html">Autosave &amp; screenshots</a><a href="05-shell-history-hygiene.html">Shell history</a><a href="06-monthly-privacy-reset-ritual.html" aria-current="page">Monthly reset</a><a href="hardening-checklist.html">Checklist</a><a href="glossary.html">Glossary</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>06 · The monthly privacy reset ritual</h1>
+<p>Hardening isn't a weekend; it's a rhythm. Once a month — fifteen minutes, coffee in hand — walk through this ritual. It's spelled out step by step. Done is better than perfect.</p>
+<h2>The ritual, in order</h2>
+<h3>Part 1 · Doors (5 minutes)</h3>
+<ol>
+<li>List listening ports (<code>ss -tlnp</code> / <code>netstat -ano</code> / <code>lsof -iTCP -sTCP:LISTEN</code>). Confirm every AI-related one binds <code>127.0.0.1</code>.</li>
+<li>If any app's server shows <code>0.0.0.0</code>, flip its host setting back before you forget which tutorial caused it.</li>
+<li>Skim your firewall's rule list. Delete any rule you added for a tool you've since uninstalled.</li>
+</ol>
+<h3>Part 2 · Files (5 minutes)</h3>
+<ol start="4">
+<li>Run <code>du -sh</code> on your model folder and on <code>~/.cache/huggingface</code> (or the Windows equivalent). Note the numbers in <code>models-manifest.md</code>.</li>
+<li>Delete models you haven't used in 60 days. Update the manifest as you go.</li>
+<li>Empty the AI app's chat trash / deleted chats, and check for orphaned files in its data folder.</li>
+<li>If the AI app attached or embedded documents this month, clear its upload cache and vector store.</li>
+</ol>
+<h3>Part 3 · Memories (5 minutes)</h3>
+<ol start="8">
+<li>Trim shell history with the sed/tail filter from page 05.</li>
+<li>Clear clipboard history.</li>
+<li>Move OS screenshots older than the month into a folder with an expiry date, or delete them.</li>
+<li>Rotate the <code>models-manifest.md</code> into a dated copy if it's grown; delete stale manifest lines.</li>
+</ol>
+<h3>Part 4 · The once-a-quarter extras</h3>
+<ul>
+<li>Review chat history in your main app and delete anything over 90 days.</li>
+<li>Update each AI app. Read the release notes for storage-path changes — that's the #1 way your mental model drifts from disk reality.</li>
+<li>Back up your manifest + checklist. Don't back up chats/models.</li>
+</ul>
+<h2>Making it stick</h2>
+<ul>
+<li>Pick a fixed day: the first Saturday of the month has a nice rhythm to it.</li>
+<li>Stack it with something pleasant; coffee elevates any ritual.</li>
+<li>Print the <a href="hardening-checklist.html">hardening checklist</a> and put a real pen mark on each item. Physical checkmarks work.</li>
+<li>If you miss a month: the ritual <em>is</em> the recovery. Just run the next one.</li>
+</ul>
+<div class="pagenav">
+  <a href="index.html">&larr; Start here</a> &middot;
+  <a href="hardening-checklist.html">Hardening checklist</a> &middot;
+  <a href="glossary.html">Glossary</a>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Local AI Privacy Hardening Guide &middot; A follow-up manual by Asdale Dynamics, LLC &middot; MIT License &middot; Education only &mdash; not security, legal, or medical advice.</p>
+  </div>
+</footer>
+</body>
+</html>

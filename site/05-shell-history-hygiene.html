@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local AI Privacy Hardening Guide &mdash; Shell history</title>
+<meta name="description" content="Plain-English guide to locking down a local AI setup: ports, firewall rules, model and cache hygiene, chat persistence, autosave risks, shell history, and a monthly reset ritual.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="sitename"><a href="index.html"><span>Local AI</span> Privacy Hardening Guide</a></p>
+    <nav class="topnav"><a href="index.html">Start here</a><a href="01-ports-and-firewall.html">Ports &amp; firewall</a><a href="02-model-files-and-cache-hygiene.html">Model &amp; cache hygiene</a><a href="03-where-chats-persist-on-disk.html">Where chats live</a><a href="04-autosave-and-screenshot-risks.html">Autosave &amp; screenshots</a><a href="05-shell-history-hygiene.html" aria-current="page">Shell history</a><a href="06-monthly-privacy-reset-ritual.html">Monthly reset</a><a href="hardening-checklist.html">Checklist</a><a href="glossary.html">Glossary</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>05 · Shell history hygiene</h1>
+<p>If you run local AI from a terminal, your shell is quietly keeping a diary. Every command you typed — including ones with file names, model tags, and occasionally an environment variable you really didn't mean to leave lying around — is sitting in a plain-text history file.</p>
+<h2>Where the diary lives</h2>
+<table>
+<thead>
+<tr>
+<th>Shell</th>
+<th>History file</th>
+<th>Size cap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bash</td>
+<td><code>~/.bash_history</code></td>
+<td><code>HISTSIZE</code> / <code>HISTFILESIZE</code> variables</td>
+</tr>
+<tr>
+<td>zsh</td>
+<td><code>~/.zsh_history</code></td>
+<td><code>HISTSIZE</code> / <code>SAVEHIST</code> variables</td>
+</tr>
+<tr>
+<td>fish</td>
+<td><code>~/.local/share/fish/fish_history</code></td>
+<td>per-shell setting</td>
+</tr>
+<tr>
+<td>PowerShell</td>
+<td><code>%APPDATA%\Microsoft\Windows\...\ConsoleHost_history.txt</code></td>
+<td>fixed by Windows</td>
+</tr>
+</tbody>
+</table>
+<h2>The three habits that matter</h2>
+<ol>
+<li><strong>Don't put secrets on the command line.</strong> <code>export MY_API_KEY=sk-hunter2</code> typed once lives forever in plaintext. Use a <code>.env</code> file excluded via <code>.gitignore</code>, or your OS keyring.</li>
+<li><strong>Purge the history when you're done with a sensitive session.</strong>
+   - bash: <code>history -c &amp;&amp; history -w</code> (clears the running history and rewrites the file)
+   - zsh: <code>rm ~/.zsh_history</code> then start a fresh shell
+   - PowerShell: <code>Clear-History</code> (plus delete the <code>ConsoleHost_history.txt</code> file above for the file on disk)</li>
+<li><strong>Start a shell without any history at all when you plan to type something embarrassing:</strong> <code>bash --norc --noprofile</code>, or <code>HISTFILE=/dev/null bash</code>, or <code>env HISTSIZE=0 zsh</code>.</li>
+</ol>
+<h2>Trim, don't just atomic-wipe</h2>
+<p>Blitzing your entire history loses useful things — the exact <code>ollama run</code> command with model flags that you keep forgetting, the <code>dd</code> command that fixed your USB stick. Instead, keep the useful lines and drop the rest:</p>
+<pre><code class="language-bash"># Remove lines containing model tags or anything remotely sensitive
+sed -i '/sk-/d; /api[-_]key/d; /token=/d; /password/d' ~/.bash_history
+# Then shrink any huge file down to the last 500 lines
+tail -n 500 ~/.bash_history &gt; /tmp/recent &amp;&amp; mv /tmp/recent ~/.bash_history
+</code></pre>
+<p>In words: "Delete any history line containing an API-key pattern, a token, or a password — then keep only the most recent 500 lines." (Only do this to a file you <em>intend</em> to rewrite; the deletion pattern is a chainsaw.)</p>
+<h2>History hygiene in plain English</h2>
+<ul>
+<li>Your shell keeps <strong>one copy</strong> of your commands on disk for a reason: so you can reuse them. That same copy is also readable by anything with a shell on your machine, and readable in any backup you make of your home directory.</li>
+<li>You are not trying to zero-out everything; you are trying to make the <em>sensitive</em> entries forgettable while keeping the useful ones.</li>
+<li>If your home directory is backed up to anyone's server (NAS, cloud, Time Machine to a disk you haven't thought about), the history file goes with it — so a truly embarrassing entry follows you through every backup you keep. Purge early rather than purge never.</li>
+</ul>
+<p>Next: the recurring ritual that maintans all of the above.</p>
+<div class="pagenav">
+  <a href="index.html">&larr; Start here</a> &middot;
+  <a href="hardening-checklist.html">Hardening checklist</a> &middot;
+  <a href="glossary.html">Glossary</a>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Local AI Privacy Hardening Guide &middot; A follow-up manual by Asdale Dynamics, LLC &middot; MIT License &middot; Education only &mdash; not security, legal, or medical advice.</p>
+  </div>
+</footer>
+</body>
+</html>

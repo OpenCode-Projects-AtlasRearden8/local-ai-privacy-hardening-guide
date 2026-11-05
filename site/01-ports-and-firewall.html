@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local AI Privacy Hardening Guide &mdash; Ports &amp; firewall</title>
+<meta name="description" content="Plain-English guide to locking down a local AI setup: ports, firewall rules, model and cache hygiene, chat persistence, autosave risks, shell history, and a monthly reset ritual.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="sitename"><a href="index.html"><span>Local AI</span> Privacy Hardening Guide</a></p>
+    <nav class="topnav"><a href="index.html">Start here</a><a href="01-ports-and-firewall.html" aria-current="page">Ports &amp; firewall</a><a href="02-model-files-and-cache-hygiene.html">Model &amp; cache hygiene</a><a href="03-where-chats-persist-on-disk.html">Where chats live</a><a href="04-autosave-and-screenshot-risks.html">Autosave &amp; screenshots</a><a href="05-shell-history-hygiene.html">Shell history</a><a href="06-monthly-privacy-reset-ritual.html">Monthly reset</a><a href="hardening-checklist.html">Checklist</a><a href="glossary.html">Glossary</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>01 · Ports and firewall rules</h1>
+<p>Every desktop AI app quietly opens a <em>port</em> — a numbered door on your computer that programs use to talk to each other. If that door is left facing the internet (or even the rest of your home network), other people can use your chat models, read your history in some setups, and generally poke at a machine you thought was private.</p>
+<h2>The one rule that fixes most of this</h2>
+<p>Local AI servers should listen on <code>127.0.0.1</code> — the <em>loopback</em> address, which means "this machine only." Nothing outside your computer can reach a loopback-hosted service, firewall or no firewall.</p>
+<ul>
+<li><strong>Ollama:</strong> set the environment variable <code>OLLAMA_HOST=127.0.0.1</code> (this is the default on most installs, but it gets changed surprisingly often by tutorials that want you to share across your house).</li>
+<li><strong>LM Studio:</strong> Developer tab → the server has a "Host" setting. If it says <code>0.0.0.0</code>, every device on your network can reach it.</li>
+<li><strong>Open WebUI, Jan, ComfyUI, text-generation-webui:</strong> each has a host/bind setting; anything that says <code>0.0.0.0</code> or your LAN IP is a door standing open.</li>
+</ul>
+<p>Plain-English version: <code>0.0.0.0</code> means "listen at every door in the building." <code>127.0.0.1</code> means "listen only at the door inside my own office."</p>
+<h2>Common ports, and what to do with them</h2>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Usually is</th>
+<th>Keep open?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11434</td>
+<td>Ollama API</td>
+<td>Yes — bound to 127.0.0.1</td>
+</tr>
+<tr>
+<td>1234</td>
+<td>LM Studio local server</td>
+<td>Yes — bound to 127.0.0.1</td>
+</tr>
+<tr>
+<td>8080</td>
+<td>Open WebUI (and many, many other things)</td>
+<td>Yes — bound to 127.0.0.1</td>
+</tr>
+<tr>
+<td>8188</td>
+<td>ComfyUI</td>
+<td>Yes — bound to 127.0.0.1. If you use tunnels/cloud proxies, stop.</td>
+</tr>
+<tr>
+<td>7860</td>
+<td>Gradio apps, text-generation-webui</td>
+<td>Yes — bound to 127.0.0.1</td>
+</tr>
+<tr>
+<td>5000, 3000</td>
+<td>Local web front-ends</td>
+<td>Caution — double-check they are loopback-only</td>
+</tr>
+<tr>
+<td>22</td>
+<td>SSH on Linux/macOS</td>
+<td>Your call — not AI related, but know it exists</td>
+</tr>
+</tbody>
+</table>
+<p>You are <em>not</em> trying to close the ports your local AI legitimately needs. You are making sure each one is reachable only from your own machine.</p>
+<h2>Firewall rules, in plain English</h2>
+<p>A firewall is a bouncer. It checks each knock at each door against a rule list. The rules below are phrased as the operating system would enforce them, then in words.</p>
+<p><strong>Linux (ufw):</strong></p>
+<pre><code class="language-bash"># Deny others from reaching your local-AI ports
+sudo ufw deny 11434
+sudo ufw deny 1234
+sudo ufw deny 8080
+sudo ufw deny 8188
+sudo ufw deny 7860
+sudo ufw status verbose
+</code></pre>
+<p>In words: "Nobody outside this machine may knock on these five doors." Loopback traffic is unaffected — your own apps can still use Ollama locally.</p>
+<p><strong>macOS:</strong> System Settings → Network → Firewall → Options. Add each AI app (ollama, LM Studio, llamacpp) and set it to <em>Block incoming connections</em>. In words: "This app may start conversations, but may not receive knocks."</p>
+<p><strong>Windows:</strong> <code>wf.msc</code> → Inbound Rules → New Rule → Port → the specific port numbers above → Block. In words: same as Linux, but the bouncer checks Windows' own list.</p>
+<p>One honest note: strictly speaking, a loopback-bound service cannot be reached from the network at all, so the deny rules are a <em>second seat belt with air bags</em>. That is exactly the spirit of hardening — assume you'll one day flip a setting for a tutorial and not remember to flip it back.</p>
+<h2>Things to check once a month</h2>
+<ol>
+<li>Run <code>netstat</code> (Windows), <code>ss -tlnp</code> (Linux), or <code>lsof -iTCP -sTCP:LISTEN</code> on the Mac. Look for ports belonging to your AI apps and confirm the local address starts with <code>127.0.0.1</code>.</li>
+<li>Anything listening on <code>0.0.0.0</code> or <code>192.168.x.x</code> is worth investigating.</li>
+<li>If you don't recognize what owns a listening port, search the process name before you stop it.</li>
+</ol>
+<p>Next up: where the model files themselves live, and how to clean out the ones you're done with.</p>
+<div class="pagenav">
+  <a href="index.html">&larr; Start here</a> &middot;
+  <a href="hardening-checklist.html">Hardening checklist</a> &middot;
+  <a href="glossary.html">Glossary</a>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Local AI Privacy Hardening Guide &middot; A follow-up manual by Asdale Dynamics, LLC &middot; MIT License &middot; Education only &mdash; not security, legal, or medical advice.</p>
+  </div>
+</footer>
+</body>
+</html>

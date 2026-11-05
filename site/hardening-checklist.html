@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local AI Privacy Hardening Guide &mdash; Checklist</title>
+<meta name="description" content="Plain-English guide to locking down a local AI setup: ports, firewall rules, model and cache hygiene, chat persistence, autosave risks, shell history, and a monthly reset ritual.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="sitename"><a href="index.html"><span>Local AI</span> Privacy Hardening Guide</a></p>
+    <nav class="topnav"><a href="index.html">Start here</a><a href="01-ports-and-firewall.html">Ports &amp; firewall</a><a href="02-model-files-and-cache-hygiene.html">Model &amp; cache hygiene</a><a href="03-where-chats-persist-on-disk.html">Where chats live</a><a href="04-autosave-and-screenshot-risks.html">Autosave &amp; screenshots</a><a href="05-shell-history-hygiene.html">Shell history</a><a href="06-monthly-privacy-reset-ritual.html">Monthly reset</a><a href="hardening-checklist.html" aria-current="page">Checklist</a><a href="glossary.html">Glossary</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>Hardening checklist</h1>
+<p>A one-page summary of every step in the manual. Print it, mark it, keep the pen nearby. Each entry links back to the full explanation.</p>
+<h2>Setup (do once)</h2>
+<ul>
+<li><input type="checkbox"> Set every AI app server to <code>127.0.0.1</code> (pages <a href="01-ports-and-firewall.html">01</a>)</li>
+<li><input type="checkbox"> Add firewall rules blocking inbound 11434, 1234, 8080, 8188, 7860</li>
+<li><input type="checkbox"> Point each app at one shared models folder</li>
+<li><input type="checkbox"> Create <code>models-manifest.md</code> and list current models</li>
+<li><input type="checkbox"> Find each app's data path and write it in the manifest</li>
+<li><input type="checkbox"> Prefer <code>.safetensors</code> / <code>.gguf</code> models over <code>.bin</code> / <code>.pth</code> from unknown publishers</li>
+<li><input type="checkbox"> Exclude AI app data folder from OS desktop-search indexing</li>
+<li><input type="checkbox"> Know whether your Desktop/Documents/Pictures folder cloud-syncs; decide if that is okay</li>
+<li><input type="checkbox"> Use full-disk encryption if the machine leaves the house (or is shared)</li>
+</ul>
+<h2>Monthly ritual (every month)</h2>
+<ul>
+<li><input type="checkbox"> Confirm listening ports bind <code>127.0.0.1</code> (page <a href="06-monthly-privacy-reset-ritual.html">06</a>)</li>
+<li><input type="checkbox"> <code>du -sh</code> the model and cache folders; record sizes</li>
+<li><input type="checkbox"> Delete models unused for 60+ days; update manifest</li>
+<li><input type="checkbox"> Empty in-app chat trash; check data folder for orphans</li>
+<li><input type="checkbox"> Clear AI app upload cache and vector store (if you used document attachments)</li>
+<li><input type="checkbox"> Trim shell history (<code>sed</code> + <code>tail</code> filter, page <a href="05-shell-history-hygiene.html">05</a>)</li>
+<li><input type="checkbox"> Clear clipboard history</li>
+<li><input type="checkbox"> Delete screenshots older than a month (or move to a dated folder)</li>
+</ul>
+<h2>Quarterly</h2>
+<ul>
+<li><input type="checkbox"> Delete chats older than 90 days</li>
+<li><input type="checkbox"> Update AI apps; re-read storage-path settings after upgrades</li>
+<li><input type="checkbox"> Refresh the manifest and checklist in a dated backup copy</li>
+</ul>
+<h2>Before sharing anything</h2>
+<ul>
+<li><input type="checkbox"> Crop screenshots to the minimum window</li>
+<li><input type="checkbox"> Blur or replace names, addresses, network IPs</li>
+<li><input type="checkbox"> Confirm screenshot folder is not cloud-synced</li>
+</ul>
+<div class="pagenav">
+  <a href="index.html">&larr; Start here</a> &middot;
+  <a href="hardening-checklist.html">Hardening checklist</a> &middot;
+  <a href="glossary.html">Glossary</a>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Local AI Privacy Hardening Guide &middot; A follow-up manual by Asdale Dynamics, LLC &middot; MIT License &middot; Education only &mdash; not security, legal, or medical advice.</p>
+  </div>
+</footer>
+</body>
+</html>

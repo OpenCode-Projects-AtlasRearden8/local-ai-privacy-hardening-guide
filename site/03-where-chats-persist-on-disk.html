@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local AI Privacy Hardening Guide &mdash; Where chats live</title>
+<meta name="description" content="Plain-English guide to locking down a local AI setup: ports, firewall rules, model and cache hygiene, chat persistence, autosave risks, shell history, and a monthly reset ritual.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="sitename"><a href="index.html"><span>Local AI</span> Privacy Hardening Guide</a></p>
+    <nav class="topnav"><a href="index.html">Start here</a><a href="01-ports-and-firewall.html">Ports &amp; firewall</a><a href="02-model-files-and-cache-hygiene.html">Model &amp; cache hygiene</a><a href="03-where-chats-persist-on-disk.html" aria-current="page">Where chats live</a><a href="04-autosave-and-screenshot-risks.html">Autosave &amp; screenshots</a><a href="05-shell-history-hygiene.html">Shell history</a><a href="06-monthly-privacy-reset-ritual.html">Monthly reset</a><a href="hardening-checklist.html">Checklist</a><a href="glossary.html">Glossary</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>03 · Where chats persist on disk</h1>
+<p>Deleting a conversation in the app's sidebar does not necessarily delete what is on disk. Each tool saves chats in a slightly different place, and some keep exports, logs, or a database even after you click delete. This page tells you where to look.</p>
+<h2>The natural habitat of each tool</h2>
+<table>
+<thead>
+<tr>
+<th>App</th>
+<th>Chats typically live at</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LM Studio</td>
+<td><code>~/.lmstudio/</code> (Chats &amp; My Models are subfolders; check the app's <em>Data Path</em> setting)</td>
+<td>The app shows its data path on the welcome/settings screen — the single most useful thing to know.</td>
+</tr>
+<tr>
+<td>Ollama (CLI)</td>
+<td>Not stored persistently by default</td>
+<td>A terminal conversation vanishes when the terminal dies. If you pipe it to a file, <em>that file</em> is your memory now.</td>
+</tr>
+<tr>
+<td>Open WebUI</td>
+<td>A SQLite database (often <code>webui.db</code>) inside its data folder</td>
+<td>Chats, files you attached, and accounts all live in one database file. Delete the file and the whole interface's memory is gone.</td>
+</tr>
+<tr>
+<td>Jan</td>
+<td><code>~/.jan/</code> (check its Settings → General)</td>
+<td>Chats plus app-specific assistant configs.</td>
+</tr>
+<tr>
+<td>llama.cpp / scripts</td>
+<td>Whatever you redirect output to</td>
+<td><code>---</code> nothing auto-saved.</td>
+</tr>
+</tbody>
+</table>
+<h2>Reading the leftovers</h2>
+<p>Even after deleting in-app, some apps keep:</p>
+<ul>
+<li><strong>Orphaned chat JSON files</strong> in the data folder (LM Studio in particular: deleting via UI should clean these, but check the folder after a version upgrade).</li>
+<li><strong>Vector indexes / RAG caches</strong> — chunks of any documents you attached for Q&amp;A. These may have full sentences from your files, in plain text.</li>
+<li><strong>OS-level copies</strong>: your text editor's autosave, clipboard managers, and desktop search indexes.</li>
+</ul>
+<h2>Practical habits</h2>
+<ul>
+<li><strong>Know your app's data path.</strong> Open settings, find the "data" or "storage" line, and write it down in your <code>models-manifest.md</code>. Every app has one; every guide avoids telling you.</li>
+<li><strong>Delete inside the app, then verify.</strong> Delete a test chat, then search its data folder for a distinguishing word from that chat. If the word is still there, you know it keeps shadows, and your monthly ritual should include that folder.</li>
+<li><strong>Treat attached documents like the chats themselves.</strong> If you attach your résumé to ask a model to rewrite it, the attachment, its extracted text, and the chat reply may all persist.</li>
+<li><strong>Back up nothing sensitive by default.</strong> Local backups are your choice; sync-to-cloud backups of your entire home folder (OneDrive, iCloud Desktop) will carry your chats with them. That is page 04's territory.</li>
+</ul>
+<p>Next: the sneaky leak paths — autosave and screenshots.</p>
+<div class="pagenav">
+  <a href="index.html">&larr; Start here</a> &middot;
+  <a href="hardening-checklist.html">Hardening checklist</a> &middot;
+  <a href="glossary.html">Glossary</a>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Local AI Privacy Hardening Guide &middot; A follow-up manual by Asdale Dynamics, LLC &middot; MIT License &middot; Education only &mdash; not security, legal, or medical advice.</p>
+  </div>
+</footer>
+</body>
+</html>
